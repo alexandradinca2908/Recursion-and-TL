@@ -26,6 +26,9 @@ def equal(tree1: Tree, tree2: Tree): Boolean =
         .foldLeft(true)((acc: Boolean, x: Boolean) => acc & x)
 
 def treeToString(tree: Tree): String =
+  //  Receive a list of trees (usually the contents of a node)
+  //  Traverse the list using fold and recursively call main function
+  //  to transform all trees
   def listTreeString(list: List[Tree]): String =
     val str = list.foldLeft("")((acc: String, t: Tree) => acc ++ treeToString(t) ++ ", ")
     str.dropRight(2)
@@ -36,9 +39,12 @@ def treeToString(tree: Tree): String =
 
 def replace(tree: Tree, searchTree: Tree, replacement: Tree): Tree =
   tree match
+    //  When an ID is found, we can either replace it or return
     case ID(_) =>
       if (equal(tree, searchTree)) replacement
       else tree
+    //  When a Node is found, we can either replace it or check all
+    //  its children recursively
     case Node(list) =>
       if (equal(tree, searchTree)) replacement
       else Node(list.map(t => replace(t, searchTree, replacement)))
